@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# pam_power
+# pluggable authentication module powering off when effortlessly requested
+#
+
+DEFAULTSFILE=/etc/default/pam_power;
+
+# Source the default power off password
+if [[ -f $DEFAULTSFILE ]];
+then
+  source $DEFAULTSFILE;
+fi
+
+# We must have a power off password to continue
+if [[ -z $POWEROFF_PASS ]];
+then
+ exit -1;
+fi
+
+# We must have a power off command to continue
+if [[ -z $POWEROFF_COMMAND ]];
+then
+ exit -1;
+fi
+
+# We must be running as root
+if [[ ${USER} != "root"]];
+then
+ exit 1;
+fi
+
+# We must be running in the context of PAM
+if [[ -z $PAM_USER ]];
+then
+  exit 2;
+fi
+
+# Read the provided password from the PAM ENV
+read -r password;
+
+# If the password configured matches the password entered, we call
+# $POWEROFF_COMMAND in the background
+if [[ $POWEROFF_PASS == $password ]];
+then
+  $POWEROFF_COMMAND &;
+  exit 0;
+fi
+
+exit 0;

@@ -1,0 +1,19 @@
+pam_power
+pluggable authentication module powering off when effortlessly requested
+by Jacob Appelbaum <jacob@appelbaum.net>
+
+This is a very simple PAM module that looks for a special password and halts
+the machine. It is intentionally quite simple and anything more complex should
+be done with the much more extensible PAM module pam_confused:
+
+  https://code.google.com/p/confused/source/browse/trunk/pam_confused/readme.txt
+
+To use pam_power, we suggest adding one line to the top of
+/etc/pam.d/common-auth:
+
+  auth optional pam_exec.so quiet expose_authtok /sbin/pam_power
+
+Once installed - /sbin/pam_power will be called for every PAM authentication;
+any user may power down the machine from any PAM enabled program.
+
+Thanks to grawity and others for their suggestions.

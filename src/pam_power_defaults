@@ -1,0 +1,8 @@
+# Defaults for pam_power
+# sourced by /sbin/pam_power
+
+# The default power off password
+POWEROFF_PASS="panic_in_the_streets";
+
+# The command to run when the password is matched
+POWEROFF_COMMAND="poweroff -p -f";

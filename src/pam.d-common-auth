@@ -1,0 +1,2 @@
+# This enables a systemwide power off password
+auth optional pam_exec.so quiet expose_authtok /sbin/pam_power
